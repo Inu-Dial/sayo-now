@@ -1,0 +1,55 @@
+# 0 "prog.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "prog.cpp"
+# 1 "prog.hpp" 1
+# 13 "prog.hpp"
+int __A = 16;
+int __B = 17;
+
+
+
+int ARG0 = 0;
+int ARG1 = 1;
+int ARG2 = 2;
+int ARG3 = 3;
+int R0 = 4;
+int R1 = 5;
+int R2 = 6;
+int R3 = 7;
+int P_R0 = 11;
+int P_R1 = 12;
+int P_R2 = 13;
+int P_R3 = 14;
+int DPTR = 9;
+int P_DPTR = 8;
+int IO = 10;
+
+int __NONE__ = 15;
+
+int __SYS_TIME_MS = 18;
+int __SYM_TIME_S = 19;
+int __SYS_KEY_LAY = 22;
+int __SCRIPT_ADDR = 23;
+# 2 "prog.cpp" 2
+int x=4;
+int xx=x;
+
+int y=5;
+int func(int y=6);
+int main(){
+    x=func(123+123)*456;
+    __raw(0x31,__addr(x));
+    __raw(0x33,__addr(x));
+    { if(512/256) __raw(0x07,512/256); if(512%256) __raw(0x08,512%256); };
+    y=func(x*70)+80;
+    __raw(0x31,__addr(y));
+    __raw(0x33,__addr(y));
+    __raw(0x6A,__addr(x),__addr(y));
+    return x||y;
+}
+int func(int x=6){
+
+    int y=7;
+    return x*3;
+}
