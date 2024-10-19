@@ -1,0 +1,13 @@
+MOVD sta 200				#栈顶
+
+LED_CTRL 0
+label bg
+call func					#调用func，将下一步地址压入系统栈
+LED_COL 0xff 0x00 0x00 	#red
+sleep 300
+JMP bg
+
+label func
+LED_COL 0xff 0xff 0xff		# white
+sleep 300
+ret						#返回到系统栈顶的地址

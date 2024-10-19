@@ -1,0 +1,167 @@
+# 0 "prog.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "prog.cpp"
+# 1 "sayo-lib/prog.hpp" 1
+       
+# 12 "sayo-lib/prog.hpp"
+# 1 "sayo-lib/Rx.hpp" 1
+       
+
+int R0 = 4;
+int R1 = 5;
+int R2 = 6;
+int R3 = 7;
+int P8_R0 = 11;
+int P8_R1 = 12;
+int P8_R2 = 13;
+int P8_R3 = 14;
+int P16_R0 = 48;
+int P16_R1 = 49;
+int P16_R2 = 50;
+int P16_R3 = 51;
+int P32_R0 = 56;
+int P32_R1 = 57;
+int P32_R2 = 58;
+int P32_R3 = 59;
+
+
+
+int R4 = 32;
+int R5 = 33;
+int R6 = 34;
+
+
+int R7 = 35;
+int P8_R4 = 44;
+int P8_R5 = 45;
+int P8_R6 = 46;
+int P8_R7 = 47;
+int P16_R4 = 52;
+int P16_R5 = 53;
+int P16_R6 = 54;
+int P16_R7 = 55;
+int P32_R4 = 60;
+int P32_R5 = 61;
+int P32_R6 = 62;
+int P32_R7 = 63;
+
+
+
+int R8 = 36;
+
+
+int R9 = 37;
+
+
+int R10 = 38;
+
+
+int R11 = 39;
+# 13 "sayo-lib/prog.hpp" 2
+
+
+
+
+
+int __A = 16;
+int __B = 17;
+
+
+
+
+int ARG0 = 0;
+int ARG1 = 1;
+int ARG2 = 2;
+int ARG3 = 3;
+int DPTR = 9;
+int P_DPTR = 8;
+int IO = 10;
+int NONE = 15;
+
+int __SYS_TIME_MS = 18;
+int __SYM_TIME_S = 19;
+int __SYS_KEY_LAY = 22;
+int __SCRIPT_ADDR = 23;
+# 2 "prog.cpp" 2
+
+# 1 "sayo-lib/array.hpp" 1
+       
+# 23 "sayo-lib/array.hpp"
+int malloc(int bytes=__A) {
+    __raw(0xF0,__addr(__A));
+    return __A;
+}
+
+
+
+
+int free(int pointer=__A) {
+    __raw(0xF1,__addr(__A));
+    return __A;
+}
+# 4 "prog.cpp" 2
+int x=4;
+int xx=x;
+
+int y=5;
+int func(int y=6);
+int func2(int x=ARG0);
+int A0=ARG0;
+int func3(int x=A0);
+int func4();
+# 25 "prog.cpp"
+int main(int V1=ARG1, int V0=ARG0){
+    for(V0=0;V0<=8;++V0){
+        ++V1;
+        continue;
+        ++V1;
+        break;
+        ++V1;
+    }
+    while(1)++V1;
+    while(0) ++V1;
+    while(V0){++V1;}
+    do {++V1;} while(1);
+    do {++V1;} while (0);
+    do {++V1;} while (V0);
+
+    x=func(123+123*2/4)*456;
+    x+=V0+V1;
+    x=func(112)?func(113):func(114);
+    x=(x<10);
+    y=func3(x*70)+80;
+    __raw(0x6A,__addr(x),__addr(y));
+    func4();
+    return x||y;
+}
+int func(int x=6){
+
+    int y=7;
+    return x*3;
+}
+int func2(int x=ARG0){
+    return x;
+}
+
+
+int func3(int x=ARG0){
+
+    __raw(0x6e, __addr(x), 0);
+    return func2(x);
+}
+
+
+
+
+
+
+
+int func4(){
+
+
+}
+int MOV8(int ptr=ARG0){
+    R0=ptr;
+    P8_R0=114514;
+}

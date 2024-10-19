@@ -1,0 +1,71 @@
+# 若在按住键的前 V_1 s + V_2 ms 内松手认为是短按，否则认为是长按。
+# 选中灯 V_0
+def lit 200
+
+MODE_JOG
+MOV lit V_0
+call sel_lit
+MOVD B 250
+RLD B 2
+						# B <- 1000
+
+MOV A SYS_TIME_S
+ADD V_1
+MUL
+ADD SYS_TIME_MS
+ADD V_2
+MOV R0 A
+						# R0 <- SYS_TIME_S * 1000 + SYS_TIME_MS + 参数1
+
+SET_FLAG R2
+JC hold 					# jump hold if CY
+JNZ IO tap				# jump tap if key not down
+
+MOV A SYS_TIME_S
+MUL
+ADD SYS_TIME_MS
+
+						# A <- SYS_TIME_S * 1000 + SYS_TIME_MS
+CJFNE R0 A R2			# CY <- [R0 < A],  jump R2 if R0 != A
+						# CJNE在V3编辑器中有点bug，故这里还是占用一个寄存器用CJFNE(CJNE_FLAG)
+
+label hold
+LED_COL 0xff 0x00 0x00 	# red
+WHILE_DOWN
+LED_COL 0x00 0xff 0x00 	# green
+EXIT
+
+label tap
+#LED_COL 0x00 0x00 0xff 	#blue
+LED_CTRL 0xff
+EXIT
+
+
+
+label sel_lit
+# MOV A lit
+# ADDD 0x1e
+# GK_VAL A
+# sleep 10
+# UGK_VAL A
+# sleep 10
+JNZ lit ff1
+	LED_CTRL 0
+	ret
+label ff1
+DEC lit
+JNZ lit ff2
+	LED_CTRL 1
+	ret
+label ff2
+DEC lit
+JNZ lit  ff3
+	LED_CTRL 2
+	ret
+label ff3
+DEC lit
+JNZ lit ff4
+	LED_CTRL 3
+	ret
+label ff4
+ret

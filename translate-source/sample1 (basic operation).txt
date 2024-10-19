@@ -1,0 +1,10 @@
+label begin
+MOVD R0 0  	# R0 <- 0
+MOV A R0	# A <- R0
+MOVD B 3 	# B <- 3
+MUL 		# A <- A * B
+ADDD 1 		# A <- A + 1
+ANLD A 1	# A <- A & 1
+JZ A exit		#if A =0, jump to exit
+JMP begin
+label exit 

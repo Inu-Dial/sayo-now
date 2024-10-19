@@ -1,0 +1,112 @@
+def a 238
+def b 239
+def c 240
+def lit 241
+def lay 242
+def num 243
+
+MODE_JOG
+MOVD sta 512
+MOV a V_0
+MOV b V_1
+MOV c V_2
+MOV lay V_3
+DEC lay
+call move #18
+EXIT
+
+
+
+label move
+
+JNZ lay flag1
+	call make_a_move
+	ret
+label flag1
+
+DEC lay
+
+# a->b
+XCH b c
+call move
+XCH b c
+
+call make_a_move
+
+#b->c
+XCH a b
+call move
+XCH a b
+
+INC lay
+ret
+
+label make_a_move
+MOV lit a
+call sel_lit
+LED_COL red
+sleep 200
+LED_COL blue
+MOV lit c
+call sel_lit
+LED_COL green
+sleep 200
+LED_COL blue
+sleep 200
+ret
+
+label output
+MOV A num
+MOVD B 100
+DIV
+MOV num A
+call o2
+MOV A B
+MOVD B 10
+DIV
+MOV num A
+call o2
+MOV num B
+call o2
+GK 44
+sleep 10
+UGK 44
+ret
+
+
+label o2
+JZ num fff
+	MOVD A 0x1d
+	ADD num
+	GK_VAL A
+	sleep 10
+	UGK_VAL A
+	sleep 10
+ret
+label fff
+	GK 39
+	sleep 10
+	UGK 39
+	sleep 10
+ret
+
+label sel_lit
+# MOV A lit
+# ADDD 0x1e
+# GK_VAL A
+# sleep 10
+# UGK_VAL A
+# sleep 10
+JNZ lit ff1
+	LED_CTRL 0
+	ret
+label ff1
+DEC lit
+JNZ lit ff2
+	LED_CTRL 1
+	ret
+label ff2
+	LED_CTRL 2
+	ret
+
+

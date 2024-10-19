@@ -1,0 +1,45 @@
+def lit 200
+def n 201
+
+MODE_JOG
+MOVD n 4
+PUSH(3,2,1,0)
+label pop1
+POP(lit)
+call sel_lit
+LED_COL red
+sleep 50
+DJNZ n pop1
+
+MOVD n 4
+PUSH(3,2,1,0)
+label pop2
+POP(lit)
+call sel_lit
+LED_CTRL 0xff
+sleep 50
+DJNZ n pop2
+
+EXIT
+
+label sel_lit
+JNZ lit ff1
+	LED_CTRL 0
+	ret
+label ff1
+DEC lit
+JNZ lit ff2
+	LED_CTRL 1
+	ret
+label ff2
+DEC lit
+JNZ lit  ff3
+	LED_CTRL 2
+	ret
+label ff3
+DEC lit
+JNZ lit ff4
+	LED_CTRL 3
+	ret
+label ff4
+ret

@@ -1,0 +1,64 @@
+# jump_if 系列操作
+JMP 0x2
+JC 0x4e
+JNC 0x4f
+JZ 0x50
+JNZ 0x51
+DJNZ 0x52
+CJNE 0x53		#CY
+CALL 0x54		
+RET 0x55		
+
+# (=)
+
+MOV         0x6e
+MOVD        0x71
+
+# (+ - * / %)
+ADD         0x72
+ADD_A       0x58
+ADD_AB      ADD_A B
+SUB         0x75
+SUB_A       0x5A
+SUB_AB      SUB_A B
+UNSIGNED_MUL_AB         0x60
+SIGNED_MUL_AB           0x8e
+MUL_AB      SIGNED_MUL_AB
+DIV_AB      0x61
+
+# (& | ^ ~ << >>)
+AND         0x56
+AND_AB      AND A B
+OR          0x78
+OR_AB       OR A B
+XOR         0x62
+XOR_AB      XOR A B
+CPL         0x69
+SHL         0x64
+SHL_AB      SHL A B
+SHR         0x66
+SHR_AB      SHR A B
+
+# others
+DEC 0x5e 		# reg--
+INC 0x5F		# reg++
+CLR 0x68 		# reg <- 0
+CPL 0x69		# reg = ~ reg
+
+XCH 0x6A		# swap
+PUSH 0x6c		# 入系统栈
+POP 0x6d		# 出系统栈
+EXIT 0xff
+
+NONE 15  #NONE变量
+# __A and __B should be defined in program
+A 16
+B 17
+SYS_TIME_MS 18		# 系统毫秒 0~999
+SYS_TIME_S 19		# 系统秒数 0~2^32-1
+SYS_KBLED 20		# 键盘 LED 状态
+SYS_KEY_NUM 21		# 按键计数
+SYS_KEY_LAY 22		# 键盘层级
+SCRIPT_ADDR 23		# 当前脚本步骤地址
+
+# 128+x 表示全局变量 GL_x

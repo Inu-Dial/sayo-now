@@ -1,0 +1,14 @@
+> make 使用目录下的 $(PROG).cpp 编译出 $(PROG).json
+PROG 的值默认为 prog
+> make -e PROG=xxx 可以指定 PROG 为 xxx
+输出位置在 out/$(PROG).json
+注意可能要自己改一下其中 json 开头 name 这一项的值，使其合法再导入设备
+
+> make clean 删除编译出的中间文件与最终文件，不会删除源代码
+
+记得关注程序的输出信息（warning 与 error）
+sayo-now 的错误信息中的行号是预处理过的程序行号(此处为 prog.in)
+
+如果对工具有疑问，可以联系 @Inu-Dial(Yang)
+如果觉得工具有 bug，可以带着 minimal reproducible example 来找我，或者等我上传源代码以后到 github 上提 issue，
+仓库名 sayo-now，本人学习空余时间将会尽力维护

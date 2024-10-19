@@ -1,0 +1,203 @@
+# _VAL 后缀表示传入参数，相对的是无后缀-传入键值（立刻数）
+# 一般是十六进制表示操作，十进制表示变量/参数
+uchar 0
+ushort 1
+ulong 2
+char 3
+short 4
+long 5
+
+KEY_LAY 7
+KEY_ENC 8
+CY 32
+RUN 128
+
+NOP 0x01	#对应none操作
+JMP 0x02	#跳转
+SJMP 0x03
+AJMP 0x04
+
+# sleep x - 睡眠 x ms
+SLEEP_X256 0x05
+SLEEP_X1 0x06
+$256 sleep SLEEP_X256 SLEEP_X1
+
+# sleep_rand x - 睡眠 0~x ms，x 不能是 0
+SLEEP_RAND_X256 0x07
+SLEEP_RAND_X1 0x08
+$256 sleep_rand SLEEP_RAND_X256 SLEEP_RAND_X1
+
+SLEEP_X256_VAL 0x09
+SLEEP_X1_VAL 0x0A
+
+SLEEP_RAND_X8_VAL 0x0B
+SLEEP_RAND_X1_VAL 0x0C
+
+#键值-按下
+SK 0x10 		#组合键
+GK 0X11 		#一般键
+MK 0X12		#鼠标键
+MU 0x13 		#多媒体
+
+#传参-按下
+SK_VAL 0x14
+GK_VAL 0x15
+MK_VAL 0x16
+MU_VAL 0x17
+
+#键值-松开
+USK 0X18
+UGK 0X19
+UMK 0X1A
+UMU 0x1B
+
+#传参-松开
+USK_VAL 0X1C
+UGK_VAL 0X1D
+UMK_VAL 0X1E
+UMU_VAL 0x1F
+
+UPDATE 0x20
+
+MO_X 0
+MO_Y 1
+MO_S 2
+
+#鼠标操作
+MO_XYZ 0x21			# 光标移动，传入两个参数，参数1 0/1/2 表示 X/Y/滚轮, 参数2表示距离
+MO_XYZ_VAL 0x22
+GA_XYZ 0x23
+GA_XYZ_VAL 0x24
+TB_XY 0x25			# 光标定位，传入 x,y，可以传16位参数
+TB_XY_VAL 0x26
+
+#游戏控制器操作
+GAK 0x2C
+GAK_VAL 0x2D
+UGAK 0x2E
+UGAK_VAL 0x2F
+
+C2K 0x30 			# 打印 ascii 码
+U2K 0x31 			# 打印 8~16 位无符号数据
+C2K_RAND 0x32
+U2K_REG 0x33
+
+# jump_flag 系列操作
+JFC 0x48
+JFNC 0x49
+JFZ 0x4a
+JFNZ 0x4b
+DJFNZ 0x4c
+CJFNE 0x4d		#CY
+
+# jump_if 系列操作
+JC 0x4e
+JNC 0x4f
+JZ 0x50
+JNZ 0x51
+DJNZ 0x52
+CJNE 0x53		#CY
+CALL 0x54		# (Not implemented)
+RET 0x55		# (Not implemented)
+
+ADD 0x58		# A += reg
+ADDD 0x59		# A += n
+SUB 0x5A		# A -= reg
+SUBD 0x5B		# A -= n
+ORL 0x5c		# A |= reg
+ORLD 0x5d		# A |= n
+
+DEC 0x5e 		# reg--
+INC 0x5F		# reg++
+CLR 0x68 		# reg <- 0
+CPL 0x69		# reg = ~ reg
+
+MUL 0x60 		# A *= B
+DIV 0x61		# (A,B) <- (A/B,A%B)
+
+ANL 0x56 		# reg1 &= reg2
+ANLD 0x57		# reg &= n
+XRL 0x62		# reg1 ^= reg2
+XRLD 0x63		# reg ^= n
+RL 0x64			# reg1 <<= reg2
+RLD 0x65		# reg <<= n
+RR 0x66			# reg1 >>= reg2
+RRD 0x67		# reg >>= n
+
+XCH 0x6A		# swap
+PUSH 0x6c		# 入系统栈 (Not implemented)
+POP 0x6d		# 出系统栈 (Not implemented)
+MOV 0x6e		# reg1 <- reg2
+MOVD 0x6f		# reg1 <- n
+
+LED_CTRL 0xE0
+# LED_SELECT = 0
+# 传入 x 选中灯 x
+# LED_OFF = 128
+# 传入 128 关闭灯光
+# LED_ON
+# 不传参打开灯光
+# LED_RELOAD = 0xff
+# 传入 255 重载
+
+LED_COL 0xE1
+# 控制 LED 颜色，传入三个颜色代码
+
+WHILE_UPDATE 0xF4
+# 等待按键发送至电脑
+
+MOV_PC2REG 0xF6 		# 即 set_flag，reg <- &address 
+SET_FLAG 0xF6
+VALUE_RELOAD 0xF7		# 重载参数 reg
+MODE_JOG 0xF8			# 进入点动模式
+WHILE_UP 0xF9			# 按键松开时阻塞
+WHILE_DOWN 0xFA		# 按键按下时阻塞
+IF_UP_EXIT 0xFB			# 按键松开则退出
+IF_DOWN_EXIT 0xFC		# 按键按下则退出
+IF_KA_EXIT 0xFD			# 按下任意键退出
+RES 0xFE					# 从头再来一次
+EXIT 0xFF					# 退出脚本
+EXIT_NOT_CLEAN 0
+
+# 参数1,2,3,4
+V_0 0
+V_1 1
+V_2 2
+V_3 3
+
+R0 4
+R1 5
+R2 6
+R3 7
+P_DPTR 8
+DPTR 9
+IO 10
+P_R0 11
+P_R1 12
+P_R2 13
+P_R3 14
+NONE 15  #NONE变量
+A 16
+B 17
+SYS_TIME_MS 18		# 系统毫秒 0~999
+SYS_TIME_S 19		# 系统秒数 0~2^32-1
+SYS_KBLED 20		# 键盘 LED 状态
+SYS_KEY_NUM 21		# 按键计数
+SYS_KEY_LAY 22		# 键盘层级
+SCRIPT_ADDR 23		# 当前脚本步骤地址
+
+# 128+x 表示全局变量 GL_x
+
+# 实例 函数调用
+sta R3
+top P_R3
+call rec_16 A top; INC sta; MOV top A; INC sta; JMP
+ret DEC sta; MOV A top; RLD A 8; DEC sta; ADD top; JFZ NONE A
+
+red 0xff 0x00 0x00
+green 0x00 0xff 0x00
+blue 0x00 0x00 0xff
+
+PUSH\((.+),(.+)\) PUSH($1); PUSH($2)
+PUSH\((\d+)\) MOVD top $1; INC sta
+POP\((.+)\) DEC sta; MOV $1 top

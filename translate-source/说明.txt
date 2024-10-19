@@ -1,0 +1,41 @@
+本程序（translate.exe）是由 @杨 编写的 SayoDevice 汇编翻译工具，支持的功能有：
+
+1. 十六进制翻译为十进制（十六进制形如0x****或0X**** ，无视位数与大小写)
+
+2. 按照 def.txt 中或程序内 def 指令引导的格式将单词翻译为对应的一个或多个定义
+	def.txt 中每行一个定义，形如 word1 word2 [word3 ...]，表示将 word1 翻译为 word2 [word3 ...]
+	程序文本中，若一行以 def 开头，则也可引导上述定义
+	工具附带一个对应了 SayoDevice.exe 中脚本码的 def.txt 实例，可在其上自由修改
+	定义是按词匹配的，支持正则匹配与转义引用，通过 C++ regex 库实现，故 backreferences 需要用 $ 来引导
+	支持递归定义
+	支持特殊定义 $num word1 word2 word3，表示 word1 n 替换为 word2 [n/num] word3 [n%num]，[n] 表示表达式求值，只能对数字进行运算，传入变量会错误地将变量 id /num,%num，故只能用在 SLEEP_X1/X256 这种上，而 SLEEP_X1/X256_VAL 不行。特殊定义优先于普通定义且不支持正则
+	最多 4096 条定义（毕竟程序最长也就能导入 4096 字节）
+	换行符已被作为定义分割符，请在 def.txt 中或 def 后使用字符;（分号）来在定义中插入换行
+
+3. label 跳转功能
+	对于形如 label xxx 的指令，将程序中的 xxx 替换为 label 所在地址并删去此行。label优先级低于定义。
+	利用这点，可以实现形如 JMP/JZ/JNZ/... label1 的汇编跳转，不必再手算地址了。
+
+4. 地址赋值功能
+	rec_num arg1 arg2 相当于 MOVD arg1 (addr+num)/256; MOVD arg2 (addr+num)%256，
+	其中 addr 为 rec_num 指令的起始位置
+
+5. 函数调用功能（通过 def.txt 定义实现，非内置）
+	默认的 def.txt 中有 call 与 ret 的定义
+	call addr 会将 call 下面一条的地址压入系统栈，并跳转到 addr
+	ret 会跳转到系统栈顶，同时弹栈
+	由于小夜在本程序编写时并没有实现系统栈（实现了也不需要用这个程序做函数调用了不是撒），系统栈通过共享RAM实现，需要选择一个空栈栈顶 n，需占用R0~R3中的一个以作为指针访问内存。
+
+6. 参数检查功能
+	检查参数列表数量是否与操作符匹配，检查结果在 log.txt 中
+	通过 check.txt 判断
+	每行形如 word [num]
+	表示给定 word 的参数列表个数
+	若 num 不填则表示同上一行
+	check.txt 中同样会应用 def.txt 的定义
+
+7. 将程序写为 SayoDevice.exe 可读的 json 格式
+	将想要翻译的程序拖入 translate.exe 后，将目录下的 源文件名.json 导入 SayoDevice.exe 脚本界面即可。
+
+#在程序与 def.txt 中，可用 # 单行注释。一行若有 #，则 #后的内容注释会被忽略
+#新版配置程序可以从 json 导入脚本名称，但最大长度变为 16，名称在导出 json 文件内的 "name": 后，默认为源文件名
