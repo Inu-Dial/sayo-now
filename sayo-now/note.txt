@@ -1,8 +1,8 @@
 > make 使用目录下的 $(PROG).cpp 编译出 $(PROG).json
+依赖 `python3`, `make`, 以及本程序 `sayo-now.exe` (for Windows, Linux 自己编译)
 PROG 的值默认为 prog
 > make -e PROG=xxx 可以指定 PROG 为 xxx
 输出位置在 out/$(PROG).json
-注意可能要自己改一下其中 json 开头 name 这一项的值，使其合法再导入设备
 
 > make clean 删除编译出的中间文件与最终文件，不会删除源代码
 
