@@ -15,4 +15,4 @@ INC = -I sayo-lib
 > $(CC) $^ -o $@ -E -DSAYO_NOW $(INC)
 
 clean:
-> rm -f out/*
+> rm -rf out/*
