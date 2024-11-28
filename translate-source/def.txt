@@ -1,3 +1,4 @@
+
 # _VAL 后缀表示传入参数，相对的是无后缀-传入键值（立刻数）
 # 一般是十六进制表示操作，十进制表示变量/参数
 uchar 0
@@ -100,6 +101,7 @@ CJNE 0x53		#CY
 CALL 0x54		# (Not implemented)
 RET 0x55		# (Not implemented)
 
+
 ADD 0x58		# A += reg
 ADDD 0x59		# A += n
 SUB 0x5A		# A -= reg
@@ -187,17 +189,3 @@ SYS_KEY_LAY 22		# 键盘层级
 SCRIPT_ADDR 23		# 当前脚本步骤地址
 
 # 128+x 表示全局变量 GL_x
-
-# 实例 函数调用
-sta R3
-top P_R3
-call rec_16 A top; INC sta; MOV top A; INC sta; JMP
-ret DEC sta; MOV A top; RLD A 8; DEC sta; ADD top; JFZ NONE A
-
-red 0xff 0x00 0x00
-green 0x00 0xff 0x00
-blue 0x00 0x00 0xff
-
-PUSH\((.+),(.+)\) PUSH($1); PUSH($2)
-PUSH\((\d+)\) MOVD top $1; INC sta
-POP\((.+)\) DEC sta; MOV $1 top

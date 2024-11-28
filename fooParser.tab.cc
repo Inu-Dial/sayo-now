@@ -302,6 +302,17 @@
             return &var_void;
         }
 
+        // class Label: public Expr{
+        // public:
+        //     string label;
+        //     Label(Parser *parser, location_t loc, string l)
+        //     :Expr(parser,loc),label(l),rhs(r){}
+        //     value_type *eval(ostream &out){
+        //         out<<"label "<<label<<"\n";
+        //         return &var_void;
+        //     }
+        // }
+
         class Opt: public Expr{
         public:
             string id;
@@ -436,9 +447,9 @@
                     }
                     if(opt=="<"||opt==">"){
                         if(opt=="<")
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_AB"<<"\n";
                         else 
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_BA"<<"\n";
                         out<<"CLR "<<A.get_addr()<<"\n";
                         out<<"JNC __CMP_"<<id<<"\n";
                         out<<"INC "<<A.get_addr()<<"\n";
@@ -447,9 +458,9 @@
                     }
                     if(opt==">="||opt=="<="){
                         if(opt==">=")
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_AB"<<"\n";
                         else
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_BA"<<"\n";
                         out<<"CLR "<<A.get_addr()<<"\n";
                         out<<"JC __CMP_"<<id<<"\n";
                         out<<"INC "<<A.get_addr()<<"\n";
@@ -460,9 +471,9 @@
                         out<<"SUB_AB"<<"\n";
                         out<<"CLR "<<B.get_addr()<<"\n";
                         if(opt=="==")
-                            out<<"JZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
-                        else
                             out<<"JNZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
+                        else
+                            out<<"JZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
                         out<<"INC "<<B.get_addr()<<"\n";
                         out<<"label __CMP_"<<id<<"\n";
                         return &B;
@@ -884,7 +895,7 @@
     
     #define get_addr() gaddr(pl)
 
-#line 888 "fooParser.tab.cc"
+#line 899 "fooParser.tab.cc"
 
 
 #ifndef YY_
@@ -977,7 +988,7 @@
 
 #line 17 "fooParser.yy"
 namespace foo {
-#line 981 "fooParser.tab.cc"
+#line 992 "fooParser.tab.cc"
 
   /// Build a parser object.
   FooBisonParser::FooBisonParser (FooLexer &lexer_yyarg, const bool debug_yyarg, std::ostream &out_yyarg)
@@ -1325,7 +1336,7 @@ namespace foo {
     #endif
 }
 
-#line 1329 "fooParser.tab.cc"
+#line 1340 "fooParser.tab.cc"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -1461,15 +1472,15 @@ namespace foo {
           switch (yyn)
             {
   case 2: // P: %empty
-#line 942 "fooParser.yy"
+#line 953 "fooParser.yy"
                     {
         out <<"JMP "<<fn_label_prefix<<"main\n";
     }
-#line 1469 "fooParser.tab.cc"
+#line 1480 "fooParser.tab.cc"
     break;
 
   case 3: // P: P Type Identifier '=' E ';'
-#line 945 "fooParser.yy"
+#line 956 "fooParser.yy"
                                     {
             auto it=yystack_[1].value.ast->eval(out);
             if(it->is_const()){
@@ -1481,317 +1492,317 @@ namespace foo {
             // std::cerr<<$3.str<<"="<<it->get_addr()<<"\n";
             var_addr[yystack_[3].value.str]=it->get_addr();
         }
-#line 1485 "fooParser.tab.cc"
+#line 1496 "fooParser.tab.cc"
     break;
 
   case 6: // SS: %empty
-#line 960 "fooParser.yy"
+#line 971 "fooParser.yy"
                     {yylhs.value.ast=new ExprSet(pl,{});}
-#line 1491 "fooParser.tab.cc"
+#line 1502 "fooParser.tab.cc"
     break;
 
   case 7: // SS: SS S
-#line 961 "fooParser.yy"
+#line 972 "fooParser.yy"
                     {yylhs.value.ast=yystack_[1].value.ast;((ExprSet*)yystack_[1].value.ast)->args.push_back(yystack_[0].value.ast);}
-#line 1497 "fooParser.tab.cc"
+#line 1508 "fooParser.tab.cc"
     break;
 
   case 8: // E_null: %empty
-#line 964 "fooParser.yy"
+#line 975 "fooParser.yy"
                      {yylhs.value.ast=nullptr;}
-#line 1503 "fooParser.tab.cc"
+#line 1514 "fooParser.tab.cc"
     break;
 
   case 9: // E_null: E
-#line 965 "fooParser.yy"
+#line 976 "fooParser.yy"
                      {yylhs.value.ast=yystack_[0].value.ast;}
-#line 1509 "fooParser.tab.cc"
+#line 1520 "fooParser.tab.cc"
     break;
 
   case 10: // S: ';'
-#line 967 "fooParser.yy"
+#line 978 "fooParser.yy"
                                             {yylhs.value.ast=new ExprSet(pl,{});}
-#line 1515 "fooParser.tab.cc"
+#line 1526 "fooParser.tab.cc"
     break;
 
   case 11: // S: E ';'
-#line 968 "fooParser.yy"
+#line 979 "fooParser.yy"
                                             {yylhs.value.ast=yystack_[1].value.ast;}
-#line 1521 "fooParser.tab.cc"
+#line 1532 "fooParser.tab.cc"
     break;
 
   case 12: // S: '{' SS '}'
-#line 969 "fooParser.yy"
+#line 980 "fooParser.yy"
                                             {yylhs.value.ast=yystack_[1].value.ast;}
-#line 1527 "fooParser.tab.cc"
+#line 1538 "fooParser.tab.cc"
     break;
 
   case 13: // S: IF '(' E ')' S ELSE S
-#line 970 "fooParser.yy"
+#line 981 "fooParser.yy"
                                             {yylhs.value.ast=new FlowExpr(pl,yystack_[4].value.ast,yystack_[2].value.ast,yystack_[0].value.ast);}
-#line 1533 "fooParser.tab.cc"
+#line 1544 "fooParser.tab.cc"
     break;
 
   case 14: // S: IF '(' E ')' S
-#line 971 "fooParser.yy"
+#line 982 "fooParser.yy"
                                             {yylhs.value.ast=new FlowExpr(pl,yystack_[2].value.ast,yystack_[0].value.ast,new ExprSet(pl,{}));}
-#line 1539 "fooParser.tab.cc"
+#line 1550 "fooParser.tab.cc"
     break;
 
   case 15: // S: WHILE '(' E ')' S
-#line 972 "fooParser.yy"
+#line 983 "fooParser.yy"
                                             {yylhs.value.ast=new WhileExpr(pl,yystack_[2].value.ast,yystack_[0].value.ast);}
-#line 1545 "fooParser.tab.cc"
+#line 1556 "fooParser.tab.cc"
     break;
 
   case 16: // S: WHILE '(' ')' S
-#line 973 "fooParser.yy"
+#line 984 "fooParser.yy"
                                             {yylhs.value.ast=new WhileExpr(pl,new ValueExpr(pl,new const_value_type(1)),yystack_[0].value.ast);}
-#line 1551 "fooParser.tab.cc"
+#line 1562 "fooParser.tab.cc"
     break;
 
   case 17: // S: DO S WHILE '(' E ')' ';'
-#line 974 "fooParser.yy"
+#line 985 "fooParser.yy"
                                             {yylhs.value.ast=new DoWhileExpr(pl,yystack_[5].value.ast,yystack_[2].value.ast);}
-#line 1557 "fooParser.tab.cc"
+#line 1568 "fooParser.tab.cc"
     break;
 
   case 18: // S: Identifier ':'
-#line 975 "fooParser.yy"
+#line 986 "fooParser.yy"
                                 {yylhs.value.ast=new LabelExpr(pl,yystack_[1].value.str);}
-#line 1563 "fooParser.tab.cc"
+#line 1574 "fooParser.tab.cc"
     break;
 
   case 19: // S: GOTO Identifier ';'
-#line 976 "fooParser.yy"
+#line 987 "fooParser.yy"
                                 {yylhs.value.ast=new GotoExpr(pl,yystack_[1].value.str);}
-#line 1569 "fooParser.tab.cc"
+#line 1580 "fooParser.tab.cc"
     break;
 
   case 20: // S: RETURN ';'
-#line 977 "fooParser.yy"
+#line 988 "fooParser.yy"
                                 {yylhs.value.ast=new ReturnExpr(pl,nullptr);}
-#line 1575 "fooParser.tab.cc"
+#line 1586 "fooParser.tab.cc"
     break;
 
   case 21: // S: RETURN E ';'
-#line 978 "fooParser.yy"
+#line 989 "fooParser.yy"
                                 {yylhs.value.ast=new ReturnExpr(pl,yystack_[1].value.ast);}
-#line 1581 "fooParser.tab.cc"
+#line 1592 "fooParser.tab.cc"
     break;
 
   case 22: // S: CONTINUE ';'
-#line 979 "fooParser.yy"
+#line 990 "fooParser.yy"
                                 {yylhs.value.ast=new ContinueExpr(pl);}
-#line 1587 "fooParser.tab.cc"
+#line 1598 "fooParser.tab.cc"
     break;
 
   case 23: // S: BREAK ';'
-#line 980 "fooParser.yy"
+#line 991 "fooParser.yy"
                                 {yylhs.value.ast=new BreakExpr(pl);}
-#line 1593 "fooParser.tab.cc"
+#line 1604 "fooParser.tab.cc"
     break;
 
   case 24: // S: FOR '(' E_null ';' E_null ';' E_null ')' S
-#line 981 "fooParser.yy"
+#line 992 "fooParser.yy"
                                                    {yylhs.value.ast=new ForExpr(pl,yystack_[6].value.ast,yystack_[4].value.ast,yystack_[2].value.ast,yystack_[0].value.ast);}
-#line 1599 "fooParser.tab.cc"
+#line 1610 "fooParser.tab.cc"
     break;
 
   case 25: // E: '!' E
-#line 993 "fooParser.yy"
+#line 1005 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[0].value.ast});}
-#line 1605 "fooParser.tab.cc"
+#line 1616 "fooParser.tab.cc"
     break;
 
   case 26: // E: '~' E
-#line 994 "fooParser.yy"
+#line 1006 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[0].value.ast});}
-#line 1611 "fooParser.tab.cc"
+#line 1622 "fooParser.tab.cc"
     break;
 
   case 27: // E: '-' E
-#line 995 "fooParser.yy"
+#line 1007 "fooParser.yy"
                             {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[0].value.ast});}
-#line 1617 "fooParser.tab.cc"
+#line 1628 "fooParser.tab.cc"
     break;
 
   case 28: // E: '+' E
-#line 996 "fooParser.yy"
+#line 1008 "fooParser.yy"
                             {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[0].value.ast});}
-#line 1623 "fooParser.tab.cc"
+#line 1634 "fooParser.tab.cc"
     break;
 
   case 29: // E: "++" Identifier
-#line 997 "fooParser.yy"
+#line 1009 "fooParser.yy"
                                      {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{new ValueExpr(pl,new name_var(yystack_[0].value.str))});}
-#line 1629 "fooParser.tab.cc"
+#line 1640 "fooParser.tab.cc"
     break;
 
   case 30: // E: "--" Identifier
-#line 998 "fooParser.yy"
+#line 1010 "fooParser.yy"
                                      {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{new ValueExpr(pl,new name_var(yystack_[0].value.str))});}
-#line 1635 "fooParser.tab.cc"
+#line 1646 "fooParser.tab.cc"
     break;
 
   case 31: // E: E '*' E
-#line 999 "fooParser.yy"
+#line 1011 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1641 "fooParser.tab.cc"
+#line 1652 "fooParser.tab.cc"
     break;
 
   case 32: // E: E '/' E
-#line 1000 "fooParser.yy"
+#line 1012 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1647 "fooParser.tab.cc"
+#line 1658 "fooParser.tab.cc"
     break;
 
   case 33: // E: E '%' E
-#line 1001 "fooParser.yy"
+#line 1013 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1653 "fooParser.tab.cc"
+#line 1664 "fooParser.tab.cc"
     break;
 
   case 34: // E: E '+' E
-#line 1002 "fooParser.yy"
+#line 1014 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1659 "fooParser.tab.cc"
+#line 1670 "fooParser.tab.cc"
     break;
 
   case 35: // E: E '-' E
-#line 1003 "fooParser.yy"
+#line 1015 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1665 "fooParser.tab.cc"
+#line 1676 "fooParser.tab.cc"
     break;
 
   case 36: // E: E "<<" E
-#line 1004 "fooParser.yy"
+#line 1016 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1671 "fooParser.tab.cc"
+#line 1682 "fooParser.tab.cc"
     break;
 
   case 37: // E: E ">>" E
-#line 1005 "fooParser.yy"
+#line 1017 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1677 "fooParser.tab.cc"
+#line 1688 "fooParser.tab.cc"
     break;
 
   case 38: // E: E '<' E
-#line 1006 "fooParser.yy"
+#line 1018 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1683 "fooParser.tab.cc"
+#line 1694 "fooParser.tab.cc"
     break;
 
   case 39: // E: E "<=" E
-#line 1007 "fooParser.yy"
+#line 1019 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1689 "fooParser.tab.cc"
+#line 1700 "fooParser.tab.cc"
     break;
 
   case 40: // E: E '>' E
-#line 1008 "fooParser.yy"
+#line 1020 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1695 "fooParser.tab.cc"
+#line 1706 "fooParser.tab.cc"
     break;
 
   case 41: // E: E ">=" E
-#line 1009 "fooParser.yy"
+#line 1021 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1701 "fooParser.tab.cc"
+#line 1712 "fooParser.tab.cc"
     break;
 
   case 42: // E: E "==" E
-#line 1010 "fooParser.yy"
+#line 1022 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1707 "fooParser.tab.cc"
+#line 1718 "fooParser.tab.cc"
     break;
 
   case 43: // E: E "!=" E
-#line 1011 "fooParser.yy"
+#line 1023 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1713 "fooParser.tab.cc"
+#line 1724 "fooParser.tab.cc"
     break;
 
   case 44: // E: E '&' E
-#line 1012 "fooParser.yy"
+#line 1024 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1719 "fooParser.tab.cc"
+#line 1730 "fooParser.tab.cc"
     break;
 
   case 45: // E: E '^' E
-#line 1013 "fooParser.yy"
+#line 1025 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1725 "fooParser.tab.cc"
+#line 1736 "fooParser.tab.cc"
     break;
 
   case 46: // E: E '|' E
-#line 1014 "fooParser.yy"
+#line 1026 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1731 "fooParser.tab.cc"
+#line 1742 "fooParser.tab.cc"
     break;
 
   case 47: // E: E "&&" E
-#line 1015 "fooParser.yy"
+#line 1027 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1737 "fooParser.tab.cc"
+#line 1748 "fooParser.tab.cc"
     break;
 
   case 48: // E: E "||" E
-#line 1016 "fooParser.yy"
+#line 1028 "fooParser.yy"
                     {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1743 "fooParser.tab.cc"
+#line 1754 "fooParser.tab.cc"
     break;
 
   case 49: // E: E '?' E ':' E
-#line 1017 "fooParser.yy"
+#line 1029 "fooParser.yy"
                                     {yylhs.value.ast=new Opt(pl,opt_type("?:"),{yystack_[4].value.ast,yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1749 "fooParser.tab.cc"
+#line 1760 "fooParser.tab.cc"
     break;
 
   case 50: // E: E '=' E
-#line 1018 "fooParser.yy"
+#line 1030 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1755 "fooParser.tab.cc"
+#line 1766 "fooParser.tab.cc"
     break;
 
   case 51: // E: E "+=" E
-#line 1019 "fooParser.yy"
+#line 1031 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1761 "fooParser.tab.cc"
+#line 1772 "fooParser.tab.cc"
     break;
 
   case 52: // E: E "-=" E
-#line 1020 "fooParser.yy"
+#line 1032 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1767 "fooParser.tab.cc"
+#line 1778 "fooParser.tab.cc"
     break;
 
   case 53: // E: E "*=" E
-#line 1021 "fooParser.yy"
+#line 1033 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1773 "fooParser.tab.cc"
+#line 1784 "fooParser.tab.cc"
     break;
 
   case 54: // E: E "/=" E
-#line 1022 "fooParser.yy"
+#line 1034 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1779 "fooParser.tab.cc"
+#line 1790 "fooParser.tab.cc"
     break;
 
   case 55: // E: E "%=" E
-#line 1023 "fooParser.yy"
+#line 1035 "fooParser.yy"
                    {yylhs.value.ast=new Opt(pl,opt_type(yystack_[1].value.str),{yystack_[2].value.ast,yystack_[0].value.ast});}
-#line 1785 "fooParser.tab.cc"
+#line 1796 "fooParser.tab.cc"
     break;
 
   case 56: // E: '(' E ')'
-#line 1024 "fooParser.yy"
+#line 1036 "fooParser.yy"
                             {yylhs.value.ast = yystack_[1].value.ast;}
-#line 1791 "fooParser.tab.cc"
+#line 1802 "fooParser.tab.cc"
     break;
 
   case 57: // E: Int_Constant
-#line 1025 "fooParser.yy"
+#line 1037 "fooParser.yy"
                             {
             // out << "pushd "<<$1.str<<'\n';
             int x=0;
@@ -1822,50 +1833,50 @@ namespace foo {
             }
             yylhs.value.ast=new ValueExpr(pl,new const_value_type(x));
         }
-#line 1826 "fooParser.tab.cc"
+#line 1837 "fooParser.tab.cc"
     break;
 
   case 58: // E: Identifier
-#line 1055 "fooParser.yy"
+#line 1067 "fooParser.yy"
                             {
             // cout << "push "<<$1.str<<'\n';
             yylhs.value.ast=new ValueExpr(pl,new name_var(yystack_[0].value.str));
         }
-#line 1835 "fooParser.tab.cc"
+#line 1846 "fooParser.tab.cc"
     break;
 
   case 59: // E: Identifier '(' ')'
-#line 1059 "fooParser.yy"
+#line 1071 "fooParser.yy"
                           {
             // out << "call "<<$1.str<<"\n";
             yylhs.value.ast=new FnCall(pl,yystack_[2].value.str,{});
         }
-#line 1844 "fooParser.tab.cc"
+#line 1855 "fooParser.tab.cc"
     break;
 
   case 60: // E: Identifier '(' Elist ')'
-#line 1063 "fooParser.yy"
+#line 1075 "fooParser.yy"
                                     {
             // out << "call "<<$1.str<<"\n";
             yylhs.value.ast=new FnCall(pl,yystack_[3].value.str,((ExprSet*)yystack_[1].value.ast)->args);
         }
-#line 1853 "fooParser.tab.cc"
+#line 1864 "fooParser.tab.cc"
     break;
 
   case 61: // Elist: E
-#line 1069 "fooParser.yy"
+#line 1081 "fooParser.yy"
                         {yylhs.value.ast=new ExprSet(pl,{yystack_[0].value.ast});}
-#line 1859 "fooParser.tab.cc"
+#line 1870 "fooParser.tab.cc"
     break;
 
   case 62: // Elist: Elist ',' E
-#line 1070 "fooParser.yy"
+#line 1082 "fooParser.yy"
                         {yylhs.value.ast=yystack_[2].value.ast;((ExprSet*)yystack_[2].value.ast)->args.push_back(yystack_[0].value.ast);}
-#line 1865 "fooParser.tab.cc"
+#line 1876 "fooParser.tab.cc"
     break;
 
   case 63: // deflist: Type Identifier '=' E
-#line 1082 "fooParser.yy"
+#line 1094 "fooParser.yy"
                                     {
                 auto it=yystack_[0].value.ast->eval(out);
                 if(it->is_const()){
@@ -1880,11 +1891,11 @@ namespace foo {
                     {name_var(yystack_[2].value.str)},
                     {it->get_addr()});
             }
-#line 1884 "fooParser.tab.cc"
+#line 1895 "fooParser.tab.cc"
     break;
 
   case 64: // deflist: deflist ',' Type Identifier '=' E
-#line 1096 "fooParser.yy"
+#line 1108 "fooParser.yy"
                                               {
                 auto it=yystack_[0].value.ast->eval(out);
                 if(it->is_const()){
@@ -1899,11 +1910,11 @@ namespace foo {
                 ((Deflist*)yylhs.value.ast)->syms.push_back(name_var(yystack_[2].value.str));
                 ((Deflist*)yylhs.value.ast)->addrs.push_back(it->get_addr());
             }
-#line 1903 "fooParser.tab.cc"
+#line 1914 "fooParser.tab.cc"
     break;
 
   case 65: // def: Type Identifier '=' E
-#line 1112 "fooParser.yy"
+#line 1124 "fooParser.yy"
                                         {
                 auto it=yystack_[0].value.ast->eval(out);
                 if(it->is_const()){
@@ -1914,11 +1925,11 @@ namespace foo {
                 }
                 yylhs.value.defs={{yystack_[2].value.str,it->get_addr()}};
             }
-#line 1918 "fooParser.tab.cc"
+#line 1929 "fooParser.tab.cc"
     break;
 
   case 66: // def: def ',' Identifier '=' E
-#line 1122 "fooParser.yy"
+#line 1134 "fooParser.yy"
                                      {
                 yylhs.value.defs=yystack_[4].value.defs;
                 yystack_[4].value.defs.clear();
@@ -1931,40 +1942,40 @@ namespace foo {
                 }
                 yylhs.value.defs.push_back({yystack_[2].value.str,it->get_addr()});
             }
-#line 1935 "fooParser.tab.cc"
+#line 1946 "fooParser.tab.cc"
     break;
 
   case 67: // fn_dec: Type Identifier '(' ')' ';'
-#line 1137 "fooParser.yy"
+#line 1149 "fooParser.yy"
             {
                 // out << "fn_dec "<<$2.str<<"\n";
                 FnDec(pl,get_int_type(yystack_[4].value.str),yystack_[3].value.str,{},{});
             }
-#line 1944 "fooParser.tab.cc"
+#line 1955 "fooParser.tab.cc"
     break;
 
   case 68: // fn_dec: Type Identifier '(' deflist ')' ';'
-#line 1142 "fooParser.yy"
+#line 1154 "fooParser.yy"
             {
                 // out << "fn_dec "<<$2.str<<"\n";
                 FnDec(pl,get_int_type(yystack_[5].value.str),yystack_[4].value.str,((Deflist*)yystack_[2].value.ast)->types,((Deflist*)yystack_[2].value.ast)->addrs);
             }
-#line 1953 "fooParser.tab.cc"
+#line 1964 "fooParser.tab.cc"
     break;
 
   case 69: // fn_def: Type Identifier '(' ')' '{' SS '}'
-#line 1149 "fooParser.yy"
+#line 1161 "fooParser.yy"
             {
                 // out << "fn_def "<<$2.str<<"\n";
                 FnDef(out,pl,get_int_type(yystack_[6].value.str),
                 yystack_[5].value.str,{},{},{},
                 {},{yystack_[1].value.ast});
             }
-#line 1964 "fooParser.tab.cc"
+#line 1975 "fooParser.tab.cc"
     break;
 
   case 70: // fn_def: Type Identifier '(' deflist ')' '{' SS '}'
-#line 1156 "fooParser.yy"
+#line 1168 "fooParser.yy"
             {
                 // out << "fn_def "<<$2.str<<"\n";
                 Deflist *it=(Deflist*) yystack_[4].value.ast;
@@ -1972,22 +1983,22 @@ namespace foo {
                 yystack_[6].value.str,it->types,it->syms,it->addrs,
                 {},{yystack_[1].value.ast});
             }
-#line 1976 "fooParser.tab.cc"
+#line 1987 "fooParser.tab.cc"
     break;
 
   case 71: // fn_def: Type Identifier '(' ')' '{' def ';' SS '}'
-#line 1164 "fooParser.yy"
+#line 1176 "fooParser.yy"
             {
                 // out << "fn_def "<<$2.str<<"\n";
                 FnDef(out,pl,get_int_type(yystack_[8].value.str),
                 yystack_[7].value.str,{},{},{},
                 yystack_[3].value.defs,{yystack_[3].value.ast});
             }
-#line 1987 "fooParser.tab.cc"
+#line 1998 "fooParser.tab.cc"
     break;
 
   case 72: // fn_def: Type Identifier '(' deflist ')' '{' def ';' SS '}'
-#line 1171 "fooParser.yy"
+#line 1183 "fooParser.yy"
             {
                 // out << "fn_def "<<$2.str<<"\n";
                 Deflist *it=(Deflist*) yystack_[6].value.ast;
@@ -1995,11 +2006,11 @@ namespace foo {
                 yystack_[8].value.str,it->types,it->syms,it->addrs,
                 yystack_[3].value.defs,{yystack_[1].value.ast});
             }
-#line 1999 "fooParser.tab.cc"
+#line 2010 "fooParser.tab.cc"
     break;
 
 
-#line 2003 "fooParser.tab.cc"
+#line 2014 "fooParser.tab.cc"
 
             default:
               break;
@@ -2620,14 +2631,14 @@ namespace foo {
   const short
   FooBisonParser::yyrline_[] =
   {
-       0,   942,   942,   945,   956,   957,   960,   961,   964,   965,
-     967,   968,   969,   970,   971,   972,   973,   974,   975,   976,
-     977,   978,   979,   980,   981,   993,   994,   995,   996,   997,
-     998,   999,  1000,  1001,  1002,  1003,  1004,  1005,  1006,  1007,
-    1008,  1009,  1010,  1011,  1012,  1013,  1014,  1015,  1016,  1017,
-    1018,  1019,  1020,  1021,  1022,  1023,  1024,  1025,  1055,  1059,
-    1063,  1069,  1070,  1082,  1096,  1112,  1122,  1136,  1141,  1148,
-    1155,  1163,  1170
+       0,   953,   953,   956,   967,   968,   971,   972,   975,   976,
+     978,   979,   980,   981,   982,   983,   984,   985,   986,   987,
+     988,   989,   990,   991,   992,  1005,  1006,  1007,  1008,  1009,
+    1010,  1011,  1012,  1013,  1014,  1015,  1016,  1017,  1018,  1019,
+    1020,  1021,  1022,  1023,  1024,  1025,  1026,  1027,  1028,  1029,
+    1030,  1031,  1032,  1033,  1034,  1035,  1036,  1037,  1067,  1071,
+    1075,  1081,  1082,  1094,  1108,  1124,  1134,  1148,  1153,  1160,
+    1167,  1175,  1182
   };
 
   void
@@ -2710,9 +2721,9 @@ namespace foo {
 
 #line 17 "fooParser.yy"
 } // foo
-#line 2714 "fooParser.tab.cc"
+#line 2725 "fooParser.tab.cc"
 
-#line 1179 "fooParser.yy"
+#line 1191 "fooParser.yy"
 
 
 namespace foo

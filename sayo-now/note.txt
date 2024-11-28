@@ -7,7 +7,7 @@ PROG 的值默认为 prog
 > make clean 删除编译出的中间文件与最终文件，不会删除源代码
 
 记得关注程序的输出信息（warning 与 error）
-sayo-now 的错误信息中的行号是预处理过的程序行号(此处为 prog.in)
+sayo-now 的错误信息中的行号是预处理过的程序行号(此处为 $(PROG).in)
 
 如果对工具有疑问，可以联系 @Inu-Dial(Yang)
 如果觉得工具有 bug，可以带着 minimal reproducible example 来找我，或者等我上传源代码以后到 github 上提 issue，

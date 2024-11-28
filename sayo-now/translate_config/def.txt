@@ -44,6 +44,9 @@ DEC 0x5e 		# reg--
 INC 0x5F		# reg++
 CLR 0x68 		# reg <- 0
 CPL 0x69		# reg = ~ reg
+CMP 0x6B        # CY = (i<j)
+CMP_AB CMP A B
+CMP_BA CMP B A
 
 XCH 0x6A		# swap
 PUSH 0x6c		# 入系统栈

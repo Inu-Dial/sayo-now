@@ -1,6 +1,6 @@
 #pragma once
 
-#include "prog.hpp"
+#include "base.hpp"
 
 int __RANDOM = 24;
 

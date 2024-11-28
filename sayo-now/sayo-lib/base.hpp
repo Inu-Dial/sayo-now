@@ -7,6 +7,11 @@
 #define __var(x) *((void*)x)
 #define __raw(...) 0
 
+#else
+
+#define true 1
+#define false 0
+
 #endif
 
 #include "Rx.hpp"
@@ -49,3 +54,5 @@ int __SCRIPT_ADDR   = 23;       // beginning of the script
 
 #define push(x)   {__A=x; __raw(0x6c,__addr(__A));}
 #define pop(x)    {__raw(0x6d,__addr(x));}
+
+#define __print_reg(reg) __raw(0x34,__addr(reg))

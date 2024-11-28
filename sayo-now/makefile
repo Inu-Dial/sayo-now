@@ -1,18 +1,18 @@
 CC = g++
 PROG = prog
+INC = -I sayo-lib
 
 .RECIPEPREFIX = >
 .PHONY: clean
 
 ./out/$(PROG).json: ./out/$(PROG).out ./translate_config/*
-> ./translate $<
+> python3 process.py ./out/$(PROG).out ./out/$(PROG).json
 
 ./out/$(PROG).out: ./out/$(PROG).in
-> ./sayo-now $^ -o $@
+> ./sayo-now.exe $^ -o $@
 
 ./out/$(PROG).in: $(PROG).cpp
-> mkdir -p out
-> $(CC) $^ -o $@ -E -DSAYO_NOW
+> $(CC) $^ -o $@ -E -DSAYO_NOW $(INC)
 
 clean:
-> rm -rf out
+> rm -f out/*

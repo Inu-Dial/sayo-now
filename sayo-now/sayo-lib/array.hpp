@@ -1,6 +1,6 @@
 #pragma once
 
-#include "prog.hpp"
+#include "base.hpp"
 #include "Rx.hpp"
 
 // calls built-in i=malloc(i) command
@@ -34,35 +34,35 @@ int free(int pointer=__A) {
 }
 
 #define get_arr8_Rx(Rx,i,tar) { \
-    Rx+=i;        \
+    Rx+=(i);        \
     tar=P8_##Rx;  \
-    Rx-=i;        \
+    Rx-=(i);        \
 }
 #define set_arr8_Rx(Rx,i,num) {\
-    Rx+=i;        \
-    P8_##Rx=num;  \
-    Rx-=i;        \
+    Rx+=(i);        \
+    P8_##Rx=(num);  \
+    Rx-=(i);        \
 }
 
 #define get_arr16_Rx(Rx,i,tar) { \
-    Rx+=i<<1;     \
+    Rx+=(i)<<1;     \
     tar=P16_##Rx; \
-    Rx-=i<<1;     \
+    Rx-=(i)<<1;     \
 }
 #define set_arr16_Rx(Rx,i,num) {\
-    Rx+=i<<1;     \
-    P16_##Rx=num; \
-    Rx-=i<<1;     \
+    Rx+=(i)<<1;     \
+    P16_##Rx=(num); \
+    Rx-=(i)<<1;     \
 }
 
 #define get_arr32_Rx(Rx,i,tar) { \
-    Rx+=i<<2;     \
+    Rx+=(i)<<2;     \
     tar=P32_##Rx; \
-    Rx-=i<<2;     \
+    Rx-=(i)<<2;     \
 }
 #define set_arr32_Rx(Rx,i,num) {\
-    Rx+=i<<2;     \
-    P32_##Rx=num; \
-    Rx-=i<<2;     \
+    Rx+=(i)<<2;     \
+    P32_##Rx=(num); \
+    Rx-=(i)<<2;     \
 }
 

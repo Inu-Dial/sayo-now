@@ -296,6 +296,17 @@
             return &var_void;
         }
 
+        // class Label: public Expr{
+        // public:
+        //     string label;
+        //     Label(Parser *parser, location_t loc, string l)
+        //     :Expr(parser,loc),label(l),rhs(r){}
+        //     value_type *eval(ostream &out){
+        //         out<<"label "<<label<<"\n";
+        //         return &var_void;
+        //     }
+        // }
+
         class Opt: public Expr{
         public:
             string id;
@@ -430,9 +441,9 @@
                     }
                     if(opt=="<"||opt==">"){
                         if(opt=="<")
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_AB"<<"\n";
                         else 
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_BA"<<"\n";
                         out<<"CLR "<<A.get_addr()<<"\n";
                         out<<"JNC __CMP_"<<id<<"\n";
                         out<<"INC "<<A.get_addr()<<"\n";
@@ -441,9 +452,9 @@
                     }
                     if(opt==">="||opt=="<="){
                         if(opt==">=")
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_AB"<<"\n";
                         else
-                            out<<"SUB_AB"<<"\n";
+                            out<<"CMP_BA"<<"\n";
                         out<<"CLR "<<A.get_addr()<<"\n";
                         out<<"JC __CMP_"<<id<<"\n";
                         out<<"INC "<<A.get_addr()<<"\n";
@@ -454,9 +465,9 @@
                         out<<"SUB_AB"<<"\n";
                         out<<"CLR "<<B.get_addr()<<"\n";
                         if(opt=="==")
-                            out<<"JZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
-                        else
                             out<<"JNZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
+                        else
+                            out<<"JZ "<<A.get_addr()<<" __CMP_"<<id<<"\n";
                         out<<"INC "<<B.get_addr()<<"\n";
                         out<<"label __CMP_"<<id<<"\n";
                         return &B;
@@ -979,6 +990,7 @@ S   :   ';'                                 {$$.ast=new ExprSet(pl,{});}
     |   CONTINUE ';'            {$$.ast=new ContinueExpr(pl);}
     |   BREAK ';'               {$$.ast=new BreakExpr(pl);}
     |   FOR '(' E_null ';' E_null ';' E_null ')' S {$$.ast=new ForExpr(pl,$3.ast,$5.ast,$7.ast,$9.ast);}
+    // |   Identifier ':'        {$$.ast=new LabelPrefix(pl,$1.str);}
     ;
 
 /* C   :   Int_Constant

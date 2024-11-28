@@ -4,19 +4,16 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "."
+                "${workspaceFolder}/sayo-now/sayo-lib"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE",
-                "DEF_TO_INT"
+                "_UNICODE"
             ],
+            "windowsSdkVersion": "10.0.19041.0",
             "cStandard": "c17",
-            "cppStandard": "gnu++23",
-            "intelliSenseMode": "windows-gcc-x64",
-            "configurationProvider": "ms-vscode.makefile-tools",
-            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe"
+            "intelliSenseMode": "windows-msvc-x64"
         }
     ],
     "version": 4
