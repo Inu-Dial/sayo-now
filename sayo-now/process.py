@@ -51,6 +51,7 @@ parser = argparse.ArgumentParser(prog='process')
 parser.add_argument("input_file")
 parser.add_argument("output_file")
 parser.add_argument('--debug',action='store_true')
+parser.add_argument('--name',default="script")
 
 sys_args=parser.parse_args()
 
@@ -194,5 +195,5 @@ for id,words in new_code:
     
         
 with open(sys_args.output_file,'w',encoding="UTF-8") as fout:
-    fout.write(json.dumps({"lastModify":int(time.time()),"name":"script","steps":res}))
+    fout.write(json.dumps({"lastModify":int(time.time()),"name":sys_args.name,"steps":res}))
     
