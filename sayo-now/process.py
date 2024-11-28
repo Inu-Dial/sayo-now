@@ -6,10 +6,8 @@ import itertools
 
 def atoi(s):
     s=str(s)
-    return int(s[2:],16) if s.startswith("0x") else int(s)
+    return int(s[2:],16) if s.lower().startswith("0x") else int(s)
 
-defs = {}
-args = {}
 def get_arg_len(s:str):
     if s == "RGB888":
         return 3
@@ -19,6 +17,9 @@ def get_arg_len(s:str):
         x=x*10+int(c)
     if x==0: x=8
     return x//8
+
+defs = {}
+args = {}
 
 with open("translate_config/def.txt", 'r', encoding='UTF-8') as def_file:
     for line in def_file.readlines():
