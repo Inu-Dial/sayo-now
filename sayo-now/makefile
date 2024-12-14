@@ -1,6 +1,11 @@
 CC = g++
 PROG = prog
 INC = -I sayo-lib
+ifeq ($(OS),Windows_NT)
+    EXE = sayo-now.exe
+else
+    EXE = sayo-now
+endif
 
 .RECIPEPREFIX = >
 .PHONY: clean
@@ -9,10 +14,10 @@ INC = -I sayo-lib
 > python3 process.py ./out/$(PROG).out ./out/$(PROG).json
 
 ./out/$(PROG).out: ./out/$(PROG).in
-> ./sayo-now.exe $^ -o $@
+> ./$(EXE) $^ -o $@
 
-./out/$(PROG).in: $(PROG).cpp
-> $(CC) $^ -o $@ -E -DSAYO_NOW $(INC)
+./out/$(PROG).in: $(PROG).cpp ./sayo-lib/*
+> $(CC) $< -o $@ -E -DSAYO_NOW $(INC)
 
 clean:
 > rm -rf out/*

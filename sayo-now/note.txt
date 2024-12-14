@@ -1,5 +1,5 @@
 > make 使用目录下的 $(PROG).cpp 编译出 $(PROG).json
-依赖 `python3`, `make`, 以及本程序 `sayo-now.exe` (for Windows, Linux 自己编译)
+依赖 `python3`, `make`, 以及本程序 `sayo-now.exe` for Windows and 'sayo-now' for Linux
 PROG 的值默认为 prog
 > make -e PROG=xxx 可以指定 PROG 为 xxx
 输出位置在 out/$(PROG).json
