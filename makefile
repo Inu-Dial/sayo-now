@@ -1,5 +1,5 @@
 # INC = -I "C:\Program Files\win_flex_bison" 
-CC = g++ -O2 -std=c++23
+CC = g++ -O2 -std=c++23 -z noexecstack
 INC = -I .
 OUTPUT_DIR = dst
 
@@ -35,4 +35,4 @@ fooParser.tab.hh fooParser.tab.cc fooParser.output: fooParser.yy
 
 
 clean:
-> rm -rf prog main.o lex.* fooParser.tab.* fooParser.output FooLexer.o
+> rm -rf main.o lex.* fooParser.tab.* fooParser.output FooLexer.o
