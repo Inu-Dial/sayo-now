@@ -1162,7 +1162,7 @@ fn_def  :   Type Identifier '(' ')' '{' SS '}'
                 // out << "fn_def "<<$2.str<<"\n";
                 FnDef(out,pl,get_int_type($1.str),
                 $2.str,{},{},{},
-                {},{$6.ast});
+                {},{$SS.ast});
             }
         |   Type Identifier '(' deflist ')' '{' SS '}' 
             {
@@ -1170,14 +1170,14 @@ fn_def  :   Type Identifier '(' ')' '{' SS '}'
                 Deflist *it=(Deflist*) $4.ast;
                 FnDef(out,pl,get_int_type($1.str),
                 $2.str,it->types,it->syms,it->addrs,
-                {},{$7.ast});
+                {},{$SS.ast});
             }
         |   Type Identifier '(' ')' '{' def ';' SS '}'
             {
                 // out << "fn_def "<<$2.str<<"\n";
                 FnDef(out,pl,get_int_type($1.str),
                 $2.str,{},{},{},
-                $def.defs,{$6.ast});
+                $def.defs,{$SS.ast});
             }
         |   Type Identifier '(' deflist ')' '{' def ';' SS '}' 
             {
@@ -1195,8 +1195,14 @@ namespace foo
     template<typename RHS>
     inline void calcLocation(location_t &current, const RHS &rhs, const std::size_t n)
     {
-        current = location_t(YYRHSLOC(rhs, 1).first_line, YYRHSLOC(rhs, 1).first_column,
-                             YYRHSLOC(rhs, n).last_line,  YYRHSLOC(rhs, n).first_column);
+        if(!n){
+            current = location_t(YYRHSLOC(rhs, 0).first_line, YYRHSLOC(rhs, 0).first_column,
+                                 YYRHSLOC(rhs, 0).last_line,  YYRHSLOC(rhs, 0).first_column);
+        }
+        else{
+            current = location_t(YYRHSLOC(rhs, 1).first_line, YYRHSLOC(rhs, 1).first_column,
+                                 YYRHSLOC(rhs, n).last_line,  YYRHSLOC(rhs, n).first_column);
+        }
     }
     
     void FooBisonParser::error(const location_t &location, const std::string &message)

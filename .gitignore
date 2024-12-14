@@ -1,5 +1,6 @@
 sayo-now/out/*
-ain.o lex.*
+main.o 
+lex.*
 fooParser.tab.*
 fooParser.output
 FooLexer.o

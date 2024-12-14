@@ -20,4 +20,4 @@ endif
 > $(CC) $< -o $@ -E -DSAYO_NOW $(INC)
 
 clean:
-> rm -rf out/*
+> rm out/*

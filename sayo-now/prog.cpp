@@ -1,6 +1,5 @@
-#include "sayo-lib/base.hpp"
-#include "sayo-lib/Rx.hpp"
-#include "sayo-lib/array.hpp"
+#include <base.hpp>
+#include <array.hpp>
 int x=4;            // assign x with address 4
 int xx=x;           // assign xx with address of x
                     // same as "int xx=__addr(x);"
